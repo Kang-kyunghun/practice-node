@@ -1,11 +1,16 @@
 const fs = require("fs");
 const http = require("http");
 const express = require("express");
-
+const pool = require("./database/pool");
 const app = express();
 
 app.get("/ping", (req, res) => {
   res.status(200).json({ ping: "pong" });
+});
+
+app.get("/mysql", async (req, res) => {
+  const data = await pool.query("SELECT * FROM dogs;");
+  res.status(200).json({ status: data[0] });
 });
 
 const port = 3000;
