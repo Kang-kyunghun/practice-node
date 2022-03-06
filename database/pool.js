@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   port: 3306,
   user: "root",
   password: "",
-  database: "crud2",
+  database: "westagram_node",
   connectionLimit: 10,
 });
 
