@@ -58,14 +58,49 @@ const createPosting = async (req, res) => {
   });
 };
 
+const getPostingList = async (req, res) => {
+  const query = await pool.query(`SELECT * FROM postings;`);
+  const results = query[0];
+
+  res.status(200).json({
+    status: "success",
+    results: results.length,
+    data: results,
+  });
+};
+
+const getPostingDetail = async (req, res) => {
+  const product_id = req.params.posting_id;
+  const query = await pool.query(
+    `SELECT * FROM postings WHERE id=${product_id};`
+  );
+  const results = query[0];
+
+  if (results.length === 0) {
+    res.status(404).json({
+      status: "fail",
+      message: "Resource is not found",
+      results: results.length,
+      data: results,
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      results: results.length,
+      data: results,
+    });
+  }
+};
+
 app.get("/ping", (req, res) => {
-  console.log(req.headers);
   res.status(200).json({ ping: "pong" });
 });
 
 app.post("/api/v1/users/signup", signUp);
 app.post("/api/v1/users/signin", signIn);
 app.post("/api/v1/postings", createPosting);
+app.get("/api/v1/postings", getPostingList);
+app.get("/api/v1/postings/:posting_id", getPostingDetail);
 
 const port = 3000;
 app.listen(port, () => {
