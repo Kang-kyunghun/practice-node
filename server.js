@@ -2,7 +2,7 @@ const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-// const routes = require('./routes');
+const routes = require("./routes");
 const PORT = 3000;
 
 const app = express();
@@ -13,11 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 //Routing
-// app.use(routes);
-
-app.get("/ping", (req, res) => {
-  res.status(200).json({ ping: "pong" });
-});
+app.use(routes);
 
 // Create a server
 const server = http.createServer(app);

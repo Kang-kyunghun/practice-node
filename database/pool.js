@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   port: 3306,
   user: "root",
   password: "",
-  database: "westagram_node",
+  database: "airbnb_node",
   connectionLimit: 10,
 });
 
