@@ -24,9 +24,11 @@ const createUser = async (req, res, next) => {
 const logIn = async (req, res, next) => {
   try {
     const data = req.body;
-    const user = await userService.createUser(data);
+    const user = await userService.logIn(data);
 
-    return res.status(200).json({ result: user });
+    return res
+      .status(200)
+      .json({ result: { email: user.email, token: user.token } });
   } catch (err) {
     next(err);
   }
