@@ -6,4 +6,31 @@ const getUsers = async () => {
   return users[0];
 };
 
-module.exports = { getUsers };
+const getUserByEmail = async (data) => {
+  return await pool.query(`SELECT * FROM users WHERE email='${data.email}'`);
+};
+
+const createUser = async (data) => {
+  const users = await pool.query(
+    ` INSERT INTO users(
+        username, 
+        email, 
+        password, 
+        mobile_number
+      ) 
+      VALUES(
+        '${data.username}', 
+        '${data.email}', 
+        '${data.password}',
+        '${data.mobileNumber}'
+      );`
+  );
+
+  return users;
+};
+
+module.exports = {
+  getUsers,
+  getUserByEmail,
+  createUser,
+};

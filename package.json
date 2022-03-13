@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/Kang-kyunghun/practice-node#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3"
   },
