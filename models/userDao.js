@@ -7,7 +7,11 @@ const getUsers = async () => {
 };
 
 const getUserByEmail = async (data) => {
-  return await pool.query(`SELECT * FROM users WHERE email='${data.email}'`);
+  const user = await pool.query(
+    `SELECT * FROM users WHERE email='${data.email}'`
+  );
+
+  return user[0][0];
 };
 
 const createUser = async (data) => {
