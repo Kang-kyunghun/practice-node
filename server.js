@@ -11,14 +11,15 @@ const app = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-
-//Routing
 app.use(routes);
+app.use((err, req, res, next) => {
+  const { message } = err;
+  console.error(message);
+  res.status(500).json({ message: "Internal server error", error: message });
+});
 
-// Create a server
 const server = http.createServer(app);
 
-// Run my server
 const serverStart = async () => {
   try {
     server.listen(PORT, () => {
