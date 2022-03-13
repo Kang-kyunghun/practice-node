@@ -15,7 +15,7 @@ const createUser = async (req, res, next) => {
     const data = req.body;
     const users = await userService.createUser(data);
 
-    return res.status(200).json({ result: users });
+    return res.status(201).json({ result: users });
   } catch (err) {
     next(err);
   }
