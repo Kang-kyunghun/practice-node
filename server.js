@@ -13,9 +13,11 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(routes);
 app.use((err, req, res, next) => {
-  const { message } = err;
+  const { statusCode, message } = err;
   console.error(message);
-  res.status(500).json({ message: "Internal server error", error: message });
+  res
+    .status(statusCode || 500)
+    .json({ message: "Internal server error", error: message });
 });
 
 const server = http.createServer(app);
