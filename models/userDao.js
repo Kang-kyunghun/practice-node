@@ -1,32 +1,43 @@
 const pool = require("../database/pool");
+const { getConnection } = require("typeorm");
 
 const getUsers = async () => {
-  const users = await pool.query("SELECT * FROM users;");
+  const conn = getConnection();
 
-  return users[0];
+  const users = await conn.query("SELECT * FROM users;");
+
+  return users;
 };
 
 const getUserByEmail = async (data) => {
-  const user = await pool.query(
+  const conn = getConnection();
+
+  const [user] = await conn.query(
     `SELECT * FROM users WHERE email='${data.email}'`
   );
 
-  return user[0][0];
+  return user;
 };
 
 const createUser = async (data) => {
-  const users = await pool.query(
+  const conn = getConnection();
+
+  const users = await conn.query(
     ` INSERT INTO users(
-        username, 
-        email, 
-        password, 
-        mobile_number
+        first_name, 
+        last_name, 
+        mobile_number, 
+        email,
+        password,
+        kakao_id
       ) 
       VALUES(
-        '${data.username}', 
-        '${data.email}', 
+        '${data.first_name}', 
+        '${data.last_name}', 
+        '${data.mobile_number}',
+        '${data.email}',
         '${data.password}',
-        '${data.mobileNumber}'
+        ${data.kakao_id || null}
       );`
   );
 
