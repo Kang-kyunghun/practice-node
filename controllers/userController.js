@@ -34,8 +34,22 @@ const logIn = async (req, res, next) => {
   }
 };
 
+const kakaoLogIn = async (req, res, next) => {
+  try {
+    const kakao_token = req.headers.authorization;
+    const user = await userService.kakaoLogIn(kakao_token);
+
+    return res
+      .status(200)
+      .json({ result: { email: user.email, token: user.token } });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getUsers,
   createUser,
   logIn,
+  kakaoLogIn,
 };
