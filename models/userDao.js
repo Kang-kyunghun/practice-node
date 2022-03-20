@@ -1,4 +1,3 @@
-const pool = require("../database/pool");
 const { getConnection } = require("typeorm");
 
 const getUsers = async () => {
@@ -19,7 +18,24 @@ const getUserByEmail = async (data) => {
   return user;
 };
 
-const createUser = async (data) => {
+const getUserBykakaoId = async (kakaoId) => {
+  const conn = getConnection();
+
+  const [user] = await conn.query(
+    `SELECT * FROM users WHERE kakao_id=${kakaoId}`
+  );
+
+  return user;
+};
+
+const createUser = async (
+  email,
+  password,
+  firstName,
+  lastName,
+  mobileNumber,
+  kakkaoId = null
+) => {
   const conn = getConnection();
 
   const users = await conn.query(
@@ -32,12 +48,12 @@ const createUser = async (data) => {
         kakao_id
       ) 
       VALUES(
-        '${data.first_name}', 
-        '${data.last_name}', 
-        '${data.mobile_number}',
-        '${data.email}',
-        '${data.password}',
-        ${data.kakao_id || null}
+        '${firstName}', 
+        '${lastName}', 
+        '${mobileNumber}',
+        '${email}',
+        '${password}',
+        ${kakkaoId}
       );`
   );
 
@@ -47,5 +63,6 @@ const createUser = async (data) => {
 module.exports = {
   getUsers,
   getUserByEmail,
+  getUserBykakaoId,
   createUser,
 };
