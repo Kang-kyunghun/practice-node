@@ -10,10 +10,10 @@ const getUsers = async (req, res, next) => {
   }
 };
 
-const createUser = async (req, res, next) => {
+const signUp = async (req, res, next) => {
   try {
-    const data = req.body;
-    const users = await userService.createUser(data);
+    const userDto = req.body;
+    const users = await userService.signUp(userDto);
 
     return res.status(201).json({ result: users });
   } catch (err) {
@@ -23,8 +23,8 @@ const createUser = async (req, res, next) => {
 
 const logIn = async (req, res, next) => {
   try {
-    const data = req.body;
-    const user = await userService.logIn(data);
+    const userDto = req.body;
+    const user = await userService.logIn(userDto);
 
     return res
       .status(200)
@@ -49,7 +49,7 @@ const kakaoLogIn = async (req, res, next) => {
 
 module.exports = {
   getUsers,
-  createUser,
+  signUp,
   logIn,
   kakaoLogIn,
 };

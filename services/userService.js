@@ -7,18 +7,18 @@ const getUsers = async () => {
   return await userDao.getUsers();
 };
 
-const createUser = async (data) => {
+const signUp = async (userDto) => {
   const saltRounds = 10;
   const makeHash = async (password, saltRounds) => {
     return await bcrypt.hash(password, saltRounds);
   };
 
-  data.password = await makeHash(data.password, saltRounds);
-  return await userDao.createUser(data);
+  userDto.password = await makeHash(userDto.password, saltRounds);
+  return await userDao.createUser(userDto);
 };
 
-const logIn = async (data) => {
-  const user = await userDao.getUserByEmail(data);
+const logIn = async (userDto) => {
+  const user = await userDao.getUserByEmail(userDto);
 
   let error;
 
@@ -29,7 +29,7 @@ const logIn = async (data) => {
     throw error;
   }
 
-  const checkPassword = await bcrypt.compare(data.password, user.password);
+  const checkPassword = await bcrypt.compare(userDto.password, user.password);
 
   if (!checkPassword) {
     error = new Error("INVALID_USER");
@@ -58,15 +58,15 @@ const kakaoLogIn = async (kakaoToken) => {
 
   if (!user) {
     const { id, properties, kakao_account } = kakaoUser;
-
-    user = await userDao.createUser(
-      (email = kakao_account.email),
-      (password = Math.random().toString(36).slice(2)),
-      (firstName = ""),
-      (lastName = properties.nickname),
-      (mobileNumber = ""),
-      (kakkaoId = id)
-    );
+    console.log(kakaoUser);
+    user = await userDao.createUser({
+      email: kakao_account.email,
+      password: Math.random().toString(36).slice(2),
+      first_name: "",
+      last_name: properties.nickname,
+      mobile_number: "",
+      kakkao_id: id,
+    });
     user.email = kakao_account.email;
   }
 
@@ -91,7 +91,7 @@ async function userFromKakao(kakaoToken) {
 
 module.exports = {
   getUsers,
-  createUser,
+  signUp,
   logIn,
   kakaoLogIn,
 };

@@ -8,11 +8,11 @@ const getUsers = async () => {
   return users;
 };
 
-const getUserByEmail = async (data) => {
+const getUserByEmail = async (userDto) => {
   const conn = getConnection();
 
   const [user] = await conn.query(
-    `SELECT * FROM users WHERE email='${data.email}'`
+    `SELECT * FROM users WHERE email='${userDto.email}'`
   );
 
   return user;
@@ -28,18 +28,14 @@ const getUserBykakaoId = async (kakaoId) => {
   return user;
 };
 
-const createUser = async (
-  email,
-  password,
-  firstName,
-  lastName,
-  mobileNumber,
-  kakkaoId = null
-) => {
+const createUser = async (userDto) => {
   const conn = getConnection();
 
+  const { email, password, first_name, last_name, mobile_number, kakao_id } =
+    userDto;
+
   const users = await conn.query(
-    ` INSERT INTO users(
+    `INSERT INTO users(
         first_name, 
         last_name, 
         mobile_number, 
@@ -47,16 +43,9 @@ const createUser = async (
         password,
         kakao_id
       ) 
-      VALUES(
-        '${firstName}', 
-        '${lastName}', 
-        '${mobileNumber}',
-        '${email}',
-        '${password}',
-        ${kakkaoId}
-      );`
+      VALUES(?,?,?,?,?,?);`,
+    [first_name, last_name, mobile_number, email, password, kakao_id]
   );
-
   return users;
 };
 

@@ -19,7 +19,7 @@ app.use((err, req, res, next) => {
   console.error(message);
   res
     .status(statusCode || 500)
-    .json({ message: "Internal server error", error: message });
+    .json({ message: message || "Internal server error" });
 });
 
 const server = http.createServer(app);

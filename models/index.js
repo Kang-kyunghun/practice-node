@@ -1,3 +1,7 @@
-const userDao = require("./UserDao");
+const userDao = require("./userDao");
+const roomDao = require("./roomDao");
 
-module.exports = { userDao };
+module.exports = {
+  userDao,
+  roomDao,
+};
